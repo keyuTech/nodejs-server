@@ -31,12 +31,36 @@ var server = http.createServer(function(request, response){
 
 
 
-  console.log('方方说：得到 HTTP 路径\n' + path)
-  console.log('方方说：查询字符串为\n' + query)
-  console.log('方方说：不含查询字符串的路径为\n' + pathNoQuery)
+  console.log('HTTP 路径为\n' + path)
 
-  response.write('Hi')
-  response.end()
+  switch (true){
+    case (path == '/'):
+      console.log('匹配/')
+      response.setHeader('Content-Type', 'text/html')
+      response.write('<!DOCTYPE>\n<html>'  + 
+        '<head>\n<link rel="stylesheet" href="/style.css">' +
+        '</head>\n<body>'  +
+        '<h1>Hello World</h1>' +
+        '<script src="/main.js"></script>' +
+        '</body>\n</html>')
+      response.end()
+      break
+    case (path == '/style.css'):
+      console.log('匹配/style.css')
+      response.setHeader('Content-Type', 'text/css')
+      response.write('h1{color: red;}')
+      response.end()
+      break
+    case (path == '/main.js'):
+      console.log('匹配/main.js')
+      response.setHeader('Content-Type', 'text/javascript; charset=utf-8')
+      response.write('alert("Hi")')
+      response.end()
+      break
+    default:
+      response.statusCode = 404
+      response.end()
+  }
 
 
 
